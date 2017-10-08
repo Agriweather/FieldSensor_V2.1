@@ -1,6 +1,7 @@
 import serial
 import time
 import requests
+import parameter
  
 s = None
 
@@ -62,7 +63,7 @@ def parserSensorValue(rawString):
     print "result at: " + str(at) + ", ah: " + str(ah) + " ,ap: " + str(ap) + " ,li: " + str(li) + " ,st: " + str(st) + " ,sh: " + str(sh) + " ,wd: " + str(windDir) + " ,ws: " + str(windSpeed) + " ,rain: " + str(rain)
 
     #post data to server
-    hostURL = AgriServer
+    hostURL = parameter.hostURL
     payload = {'col0':'FieldSensor_V2.1-001','col1':at,'col2':ah,'col3':ap,'col4':li,'col5':st,'col6':sh,'col7':windDir,'col8':windSpeed,'col9':rain}
     finalURL="{0}/".format(hostURL)
 
