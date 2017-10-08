@@ -1,7 +1,8 @@
 import serial
 import time
 import requests
-import parameter
+import os
+import fsParameter
  
 s = None
 
@@ -62,28 +63,45 @@ def parserSensorValue(rawString):
 
     print "result at: " + str(at) + ", ah: " + str(ah) + " ,ap: " + str(ap) + " ,li: " + str(li) + " ,st: " + str(st) + " ,sh: " + str(sh) + " ,wd: " + str(windDir) + " ,ws: " + str(windSpeed) + " ,rain: " + str(rain)
 
-    #post data to server
-    hostURL = parameter.hostURL
-    payload = {'col0':'FieldSensor_V2.1-001','col1':at,'col2':ah,'col3':ap,'col4':li,'col5':st,'col6':sh,'col7':windDir,'col8':windSpeed,'col9':rain}
-    finalURL="{0}/".format(hostURL)
+    payload = {'col0':'FieldSensorV2.1-001','col1':at,'col2':ah,'col3':ap,'col4':li,'col5':st,'col6':sh,'col7':windDir,'col8':windSpeed,'col9':rain}
+    return payload
 
-    r = requests.post(finalURL, data=payload)
-    #PRINT RESPONSE
-    #print(r.text) #TEXT/HTML
-    print(r.status_code, r.reason) #HTTPfinalURL="{0}/".format(hostURL)
 
+
+def capAndSaveImage(info):
+    ts = str(int(time.time()))
+    fileName = ts + '-' + info.rstrip() + ".jpg"
+    filePath = '/Media/SD-P1/' + fileName
+    print("fileName: " + fileName)
+    cmd = 'fswebcam -r 1280x960 -i 0 -d v4l2:/dev/video0 --no-banner -p YUYV --jpeg 95 --save %s'%(filePath)
+    os.system(cmd)
+    
+    time.sleep(3)
+    return filePath
 
 def setup():
     global s
     s = serial.Serial("/dev/ttyS0", 57600)
+
+def postData2Server(imgPath, sensorData):
+
+    jpgb64 = open(imgPath,'rb').read().encode('base64').replace('\n','')
+    sensorData['col10'] = jpgb64
+    finalURL="{0}/".format(fsParameter.hostURL)
+    
+    r = requests.post(finalURL, data=sensorData)
+    #print(r.text) #TEXT/HTML
+    print(r.status_code, r.reason) #HTTPfinalURL="{0}/".format(hostURL)
  
 def loop():
     info = s.readline()
 
     try:
-        parserSensorValue(info)
-    except:
-	print "error!!! "
+	imgFilePath = capAndSaveImage(info)
+        sensorData = parserSensorValue(info)
+        postData2Server(imgFilePath,sensorData)
+    except Exception as e: 
+	print  e
 
 
 if __name__ == '__main__':
