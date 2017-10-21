@@ -68,17 +68,28 @@ void setup() {
 
 void loop() { 
     //Serial1.println("-- Loop start --");
-    getBME280Value();
-    getBH1750Value();
-    getSHT20Value();
-    getAPRSValue();
+    getSesorData();
     
-    printAllData();
+    int c = Serial1.read();
+    if(c!=-1) {
+       switch (c) {
+         case '1':
+           printAllData();
+       }
+    }
     
     delay(delayTime);
     
 }
 
+void getSensorData() {
+
+    getBME280Value();
+    getBH1750Value();
+    getSHT20Value();
+    getAPRSValue();
+
+}
 
 void printAllData() {
   

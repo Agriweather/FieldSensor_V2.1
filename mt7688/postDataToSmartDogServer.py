@@ -71,7 +71,7 @@ def parserSensorValue(rawString):
 def capAndSaveImage(info):
     ts = str(int(time.time()))
     fileName = ts + '-' + info.rstrip() + ".jpg"
-    filePath = '/Media/SD-P1/' + fileName
+    filePath = '/Media/SD-P1/images/' + fileName
     print("fileName: " + fileName)
     cmd = 'fswebcam -r 1280x960 -i 0 -d v4l2:/dev/video0 --no-banner -p YUYV --jpeg 95 --save %s'%(filePath)
     os.system(cmd)
@@ -94,8 +94,9 @@ def postData2Server(imgPath, sensorData):
     print(r.status_code, r.reason) #HTTPfinalURL="{0}/".format(hostURL)
  
 def loop():
+    s.write('1')
     info = s.readline()
-
+    
     try:
 	imgFilePath = capAndSaveImage(info)
         sensorData = parserSensorValue(info)
