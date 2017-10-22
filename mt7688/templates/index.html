@@ -13,25 +13,17 @@
 		<script src="src/moment/moment.js"></script>
 		<script src="src/moment/moment-timezone.js"></script>
         <script>
-            // $.ajax({
-            //     url : "https://works.ioa.tw/weather/api/weathers/57.json",
-            //     dataType:"json",
-            //     success:function(data) {
-            //         $("#action-body").html('天氣: ' + data['desc']);
-            //         $("#at_value").html(data['temperature']);
-            //     }
-            // });
 $(function() {
-            //$.get("https://works.ioa.tw/weather/api/weathers/57.json", function( data ) {
-            //    $("#action-body").html('天氣: ' + data['desc']);
-            //});
-            //$.get("http://192.168.100.1:5000/api/sensors", function( data ) {
             $.get("/api/sensors", function( data ) {
-//{'c': 101.0, 'b': 10020.0, 'g': 303.0, 'p': 505.0, 'ah': 76.0, 'r': 404.0, 'li': 234.0, 'ap': 99.9, 's': 202.0, 'sh': 76.0, 'at': 24.5, 'h': 53.0, 'st': 24.5, 't': 86.0}
-                $("#sensor_c").html(data['c']);
-                $("#sensor_ah").html(data['ah']);
+                $("#sensor_t").html(data['t']);
+                $("#sensor_h").html(data['h']);
                 $("#sensor_b").html(data['b']);
-                $("#sensor_g").html(data['g']);
+                $("#sensor_li").html(data['li']);
+                $("#sensor_st").html(data['st']);
+                $("#sensor_sh").html(data['sh']);
+                $("#sensor_c").html(data['c']);
+                $("#sensor_s").html(data['s']);
+                $("#sensor_r").html(data['r']);
             });
 });
         </script>
@@ -51,7 +43,7 @@ $(function() {
 			<div class="row">
 			    <div class="col-sm-12">
 					<div id="actionPanel" class="panel panel-default">
-                        <div class="panel-heading">Actions</div>
+                        <div class="panel-heading">Center Weather Bureau</div>
                         <div id="action-body" class="panel-body"></div>
 					</div>
 				</div>
@@ -72,8 +64,8 @@ $(function() {
                                         <img src="src/icons/svg/012-thermometer-1.svg" class="media-object" style="width:35px">
                                     </div>
                                     <div class="media-body">
-                                        <h5 class="media-heading">Air Temperature</h5>
-                                        <p><span id="sensor_c">0</span></p>
+                                        <h5 class="media-heading">Air Temp</h5>
+                                        <p><span id="sensor_t">0</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +78,7 @@ $(function() {
                                     </div>
                                     <div class="media-body">
                                         <h5 class="media-heading">Air Humidity</h5>
-                                        <p><span id="sensor_ah">0</span></p>
+                                        <p><span id="sensor_h">0</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +90,7 @@ $(function() {
                                         <img src="src/icons/svg/012-thermometer-1.svg" class="media-object" style="width:35px">
                                     </div>
                                     <div class="media-body">
-                                        <h5 class="media-heading">Atmospheric Pressure</h5>
+                                        <h5 class="media-heading">Pressure</h5>
                                         <p><span id="sensor_b">0</span></p>
                                     </div>
                                 </div>
@@ -112,7 +104,7 @@ $(function() {
                                     </div>
                                     <div class="media-body">
                                         <h5 class="media-heading">Light Intensity</h5>
-                                        <p><span id="sensor_g">0</span></p>
+                                        <p><span id="sensor_li">0</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -124,8 +116,8 @@ $(function() {
                                         <img src="src/icons/svg/012-thermometer-1.svg" class="media-object" style="width:35px">
                                     </div>
                                     <div class="media-body">
-                                        <h5 class="media-heading">Soil Temperature</h5>
-                                        <p><span> 30 </span></p>
+                                        <h5 class="media-heading">Soil Temp</h5>
+                                        <p><span id="sensor_st">0 </span></p>
                                     </div>
                                 </div>
                             </div>
@@ -138,13 +130,12 @@ $(function() {
                                     </div>
                                     <div class="media-body">
                                         <h5 class="media-heading">Soil Humidity</h5>
-                                        <p><span> 30 </span></p>
+                                        <p><span id="sensor_sh">0</span></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                         <div class="col-xs-6">
                             <div class='alert alert-info'>
                                 <div class="media">
@@ -153,14 +144,12 @@ $(function() {
                                     </div>
                                     <div class="media-body">
                                         <h5 class="media-heading">Wind Speed</h5>
-                                        <p><span> 30 </span></p>
+                                        <p><span id="sensor_s">0</span></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                         <div class="col-xs-6">
                             <div class='alert alert-info'>
                                 <div class="media">
@@ -168,14 +157,13 @@ $(function() {
                                         <img src="src/icons/svg/012-thermometer-1.svg" class="media-object" style="width:35px">
                                     </div>
                                     <div class="media-body">
-                                        <h5 class="media-heading">Wind Direction</h5>
-                                        <p><span> 30 </span></p>
+                                        <h5 class="media-heading">Wind Dir</h5>
+                                        <p><span id="sensor_c">0</span></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-					
                         <div class="col-xs-6">
                             <div class='alert alert-info'>
                                 <div class="media">
@@ -184,7 +172,7 @@ $(function() {
                                     </div>
                                     <div class="media-body">
                                         <h5 class="media-heading">Rain</h5>
-                                        <p><span> 30 </span></p>
+                                        <p><span id="sensor_r">0</span></p>
                                     </div>
                                 </div>
                             </div>
