@@ -2,7 +2,6 @@ import serial
 import time
 import requests
 import os
-import fsParameter
 import re
 
 class Smart7688ToDog: 
@@ -121,7 +120,7 @@ class Smart7688ToDog:
 
         jpgb64 = open(imgPath,'rb').read().encode('base64').replace('\n','')
         sensorData['col10'] = jpgb64
-        finalURL="{0}/".format(fsParameter.hostURL)
+        finalURL="{0}/".format('www.agri.com')
         
         r = requests.post(finalURL, data=sensorData)
         #print(r.text) #TEXT/HTML

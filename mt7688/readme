@@ -1,3 +1,0 @@
-opkg update
-opkg install fswebcam
-
