@@ -68,13 +68,15 @@ void setup() {
 
 void loop() { 
     //Serial1.println("-- Loop start --");
-    getSesorData();
+    //getSesorData();
     
     int c = Serial1.read();
     if(c!=-1) {
        switch (c) {
          case '1':
-           printAllData();
+	  //print test data
+	  Serial1.println('at24.5ah76ap99.9li234st24.5sh76c101s202g303t086r404p505h53b10020');
+           //printAllData();
        }
     }
     
