@@ -16,7 +16,7 @@ app = Flask(__name__, static_folder='src')
 def read_serial():
     s= Smart7688ToDog()
     out = s.parserSensorValue()
-
+    s.capDisplayImg()
 
 #    try:
 #        out = json.dumps(eval(out.strip()))

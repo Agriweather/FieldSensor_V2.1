@@ -9,7 +9,10 @@ class Smart7688ToDog:
         #self.s = None
         self.s = serial.Serial("/dev/ttyS0", 57600)
 
-
+    def capDisplayImg(self):
+        filePath = '/Media/SD-P1/src/FieldSensor_V2.1/mt7688/src/images/image.jpg'                                                                              
+        cmd = 'fswebcam -r 1280x960 -i 0 -d v4l2:/dev/video0 --no-banner -p YUYV --jpeg 95 --save %s'%(filePath)                  
+        os.system(cmd)
     def parserSensorValue(self, rawString= 'NaN'):
         if rawString is 'NaN':
             self.s.write('1')
