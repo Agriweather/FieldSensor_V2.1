@@ -16,7 +16,7 @@
 
 //不是所有的腳位都可以當作softwareSerial
 //要有支援中斷(EINT)的才可以！！
-SoftwareSerial swSerial(14,15);  //建立軟體串列埠腳位 (RX, TX)
+SoftwareSerial swSerial(10,11);  //建立軟體串列埠腳位 (RX, TX)
 HTU21D soilTHSensor;
 Adafruit_BME280 bme; // I2C
 
@@ -45,16 +45,16 @@ void setup() {
 
     bool status;
     // default settings
-    status = bme.begin();
-    if (!status) {
-        Serial1.println("Could not find a valid BME280 sensor, check wiring!");
-        while (1);
-    }
+//    status = bme.begin();
+//    if (!status) {
+//        Serial1.println("Could not find a valid BME280 sensor, check wiring!");
+////        while (1);
+//    }
 
     BH1750_Init(BH1750_address);
     soilTHSensor.begin();
     
-    delayTime = 3000;
+    delayTime = 9000;
     
 //    swSerial.begin(9600);
 
@@ -68,42 +68,39 @@ void setup() {
 
 void loop() { 
     //Serial1.println("-- Loop start --");
-    //getSesorData();
-    
-    int c = Serial1.read();
-    if(c!=-1) {
-       switch (c) {
-         case '1':
-	  //print test data
-	  Serial1.println('at24.5ah76ap99.9li234st24.5sh76c101s202g303t086r404p505h53b10020');
-           //printAllData();
-       }
-    }
-    
-    delay(delayTime);
-    
-}
-
-void getSensorData() {
-
-    getBME280Value();
+//    getBME280Value();
     getBH1750Value();
     getSHT20Value();
     getAPRSValue();
-
+  int c = Serial1.read();
+  if(c != -1) {
+    switch (c) {
+        case '1':
+          printAllData();
+          delay(delayTime);
+          break;
+        case 't':
+          Serial1.print("at00ah00ap00li00st00sh00c00s00g00t00r00p00h00b00");
+          Serial1.println();
+        
+      }
+    }
+    
+    
 }
+
 
 void printAllData() {
   
-  printBME280Value(air_temp,pres,air_humi);
-
-  //print BH1750
+  Serial1.print("at");Serial1.print(air_temp);
+  Serial1.print("ah");Serial1.print(air_humi);
+  Serial1.print("ap");Serial1.print(pres);
   Serial1.print("li");Serial1.print(light_intensity);
   Serial1.print("st");Serial1.print(soil_temp);
   Serial1.print("sh");Serial1.print(soil_humi);
   Serial1.print(aprs_string);
-
   Serial1.println();
+  
 }
 
 void getAPRSValue() {
@@ -133,13 +130,6 @@ void getBME280Value() {
   air_temp =  bme.readTemperature();
   pres = bme.readPressure() / 100.0F;
   air_humi = bme.readHumidity();
-}
-
-void printBME280Value(float air_temp, float pres, float air_humi) {
-  Serial1.print("at");Serial1.print(air_temp);
-  Serial1.print("ah");Serial1.print(air_humi);
-  Serial1.print("ap");Serial1.print(pres);
-  
 }
 
 
